@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اینفوگرافیک طرح نخبه‌پروری جوانه</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/dist/font-face.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        /* Custom Font Application */
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #f0f9ff; /* Light Blue Background */
+        }
+
+        /* Chart Container Rules (Mandatory) */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Max width constraint */
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px; /* Base height */
+            max-height: 400px;
+        }
+
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+
+        /* Card Hover Effects */
+        .info-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Timeline Styling (CSS-only, No SVG) */
+        .timeline-line {
+            position: absolute;
+            right: 50%;
+            transform: translateX(50%);
+            width: 4px;
+            height: 100%;
+            background-color: #cbd5e1;
+            z-index: 0;
+        }
+        
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #0f766e; /* Teal-700 */
+            border: 4px solid #fff;
+            z-index: 10;
+        }
+    </style>
+    
+    <!-- Palette: Vibrant Blue & Teal & Gold -->
+    <!-- 
+        Palette Name: Growth & Excellence
+        Primary Blue: #1e3a8a (blue-900)
+        Accent Teal: #0f766e (teal-700)
+        Highlight Gold: #d97706 (amber-600)
+        Background: #f0f9ff (sky-50)
+    -->
+
+    <!-- Analysis Summary:
+        1. Narrative: Introduction -> Selection Process (Funnel) -> The 4 Pillars (Holistic View) -> Deep Dive into Skills -> Timeline -> Conclusion.
+        2. Visualizations:
+           - Selection: Bar Chart (Funnel effect) to show the 50% filter.
+           - Pillars: Polar Area Chart to show the multi-dimensional nature of the program.
+           - Skills: Horizontal Bar Chart to list specific technical skills.
+           - Academics: Doughnut Chart for time allocation (Study Hall vs Tutoring).
+           - Timeline: CSS Vertical Layout.
+    -->
+</head>
+<body class="text-slate-800">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-l from-blue-900 to-teal-800 text-white py-12 px-4 shadow-lg">
+        <div class="max-w-6xl mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">طرح نخبه‌پروری «جوانه»</h1>
+            <h2 class="text-xl md:text-2xl font-light opacity-90">مرکز رشد مکتب‌يار - هیئت مکتب‌الشهدا</h2>
+            <div class="mt-8 flex justify-center space-x-4 space-x-reverse">
+                <span class="bg-amber-500 text-blue-900 px-4 py-2 rounded-full font-bold text-sm shadow-md">شروع: اسفند ۱۴۰۴</span>
+                <span class="bg-white text-teal-800 px-4 py-2 rounded-full font-bold text-sm shadow-md">پایان: رجب ۱۴۰۵</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-10 space-y-16">
+
+        <!-- Intro Section -->
+        <section class="bg-white rounded-2xl shadow-md p-8 text-center border-t-8 border-amber-500">
+            <h3 class="text-2xl font-bold text-blue-900 mb-4">چشم‌انداز طرح</h3>
+            <p class="text-lg leading-relaxed text-slate-600 max-w-4xl mx-auto">
+                طرح جوانه یک برنامه راهبردی بلندمدت است که با هدف شناسایی و پرورش نوجوانان مستعد برگزیده از اعتکاف دانش‌آموزی ۱۴۰۴ طراحی شده است. 
+                ما به دنبال تربیت نخبگانی در تراز انقلاب اسلامی هستیم که در چهار بعد 
+                <span class="font-bold text-teal-700">معرفتی، تحصیلی، مهارتی و ورزشی</span> 
+                رشد متوازن داشته باشند.
+            </p>
+        </section>
+
+        <!-- Section 1: Selection Process (Chart.js Bar/Funnel) -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-2 h-8 bg-blue-900 rounded"></div>
+                    <h3 class="text-2xl font-bold text-blue-900">فرآیند دقیق گزینش</h3>
+                </div>
+                <p class="mb-6 text-slate-600 leading-loose">
+                    ورود به طرح جوانه آسان نیست. ما از بین معتکفین سال ۱۴۰۴، تنها ۵۰٪ را که دارای شاخص‌های بالای 
+                    <span class="font-bold text-amber-600">هوش فکری (IQ)</span> و 
+                    <span class="font-bold text-amber-600">هوش اجتماعی (EQ)</span> 
+                    هستند، برای مرحله مصاحبه انتخاب می‌کنیم.
+                    <br><br>
+                    در تاریخ <strong>۲۹ بهمن</strong>، یک اردوی مصاحبه تخصصی و پایش عملی برگزار می‌شود تا برترین‌ها گزینش شوند.
+                </p>
+                <div class="bg-blue-50 p-4 rounded-lg border-r-4 border-blue-900">
+                    <h4 class="font-bold text-blue-800 mb-2">معیارهای کلیدی:</h4>
+                    <ul class="list-disc list-inside text-blue-700 space-y-1">
+                        <li>قدرت حل مسئله (IQ)</li>
+                        <li>میزان تأثیرگذاری در جمع (Social IQ)</li>
+                        <li>تعهد و دغدغه‌مندی</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-lg info-card">
+                <h4 class="text-center font-bold text-slate-500 mb-4">قیف ریزش و انتخاب (نمایشی)</h4>
+                <!-- Chart Container -->
+                <div class="chart-container">
+                    <canvas id="selectionChart"></canvas>
+                </div>
+                <p class="text-center text-xs text-slate-400 mt-2">داده‌ها تقریبی و جهت نمایش فرآیند فیلترینگ است</p>
+            </div>
+        </section>
+
+        <!-- Section 2: The 4 Pillars (Chart.js Polar Area) -->
+        <section>
+            <div class="text-center mb-10">
+                <h3 class="text-3xl font-bold text-blue-900">چهار رکن اصلی رشد</h3>
+                <p class="text-slate-500 mt-2">تعادل میان ابعاد مختلف وجودی نوجوان</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Text Descriptions -->
+                <div class="lg:col-span-1 space-y-4">
+                    <div class="bg-white p-5 rounded-lg shadow border-r-4 border-teal-600 info-card">
+                        <h4 class="font-bold text-teal-800 text-lg">۱. معرفتی (اجباری)</h4>
+                        <p class="text-sm text-slate-600 mt-1">هسته اصلی تربیتی شامل هیئت هفتگی، حلقه‌های معرفتی و تدبر در قرآن.</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow border-r-4 border-blue-600 info-card">
+                        <h4 class="font-bold text-blue-800 text-lg">۲. تحصیلی (حمایت علمی)</h4>
+                        <p class="text-sm text-slate-600 mt-1">قرائت‌خانه مسجد امام سجاد (ع) و کلاس‌های رفع اشکال امتحانات.</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow border-r-4 border-amber-500 info-card">
+                        <h4 class="font-bold text-amber-700 text-lg">۳. مهارتی (زیست‌بوم آینده)</h4>
+                        <p class="text-sm text-slate-600 mt-1">یادگیری ابزارهای هوش مصنوعی، ICDL، فنی و زبان.</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow border-r-4 border-rose-500 info-card">
+                        <h4 class="font-bold text-rose-700 text-lg">۴. ورزشی و تفریحی</h4>
+                        <p class="text-sm text-slate-600 mt-1">نشاط جسمانی با شنا، تیراندازی و اردوهای کوهنوردی.</p>
+                    </div>
+                </div>
+
+                <!-- Chart -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg flex flex-col justify-center items-center">
+                    <h4 class="font-bold text-slate-700 mb-4">توزیع تمرکز در برنامه جامع</h4>
+                    <!-- Chart Container -->
+                    <div class="chart-container">
+                        <canvas id="pillarsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Skills Breakdown (Chart.js Horizontal Bar) -->
+        <section class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl shadow-xl p-8 text-white">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <!-- Chart Area -->
+                <div class="bg-white/10 p-4 rounded-xl backdrop-blur-sm border border-white/20">
+                    <h4 class="text-center font-bold text-amber-400 mb-4">سرفصل‌های مهارتی فصل اول</h4>
+                    <!-- Chart Container -->
+                    <div class="chart-container">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Content Area -->
+                <div>
+                    <h3 class="text-3xl font-bold text-amber-400 mb-4">توسعه مهارت‌های کاربردی</h3>
+                    <p class="leading-loose opacity-90 mb-6">
+                        در دنیای امروز، تنها تحصیل کافی نیست. طرح جوانه با تمرکز بر 
+                        <strong>مهارت‌های پول‌ساز و کاربردی</strong>، 
+                        نوجوانان را برای آینده آماده می‌کند. در فصل اول، تمرکز ویژه‌ای بر نرم‌افزار Word و ابزارهای هوش مصنوعی (Prompt Engineering) خواهیم داشت.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-slate-700 p-3 rounded text-center">
+                            <span class="block text-2xl mb-1">💻</span>
+                            <span class="text-sm font-bold">ICDL & AI</span>
+                        </div>
+                        <div class="bg-slate-700 p-3 rounded text-center">
+                            <span class="block text-2xl mb-1">⚡</span>
+                            <span class="text-sm font-bold">برق و فنی</span>
+                        </div>
+                        <div class="bg-slate-700 p-3 rounded text-center">
+                            <span class="block text-2xl mb-1">📸</span>
+                            <span class="text-sm font-bold">رسانه و هنر</span>
+                        </div>
+                        <div class="bg-slate-700 p-3 rounded text-center">
+                            <span class="block text-2xl mb-1">🧠</span>
+                            <span class="text-sm font-bold">تکنیک مطالعه</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Academic Support (Chart.js Doughnut) -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="md:col-span-1 bg-white p-6 rounded-xl shadow-lg border-t-4 border-blue-600">
+                <h3 class="text-xl font-bold text-blue-900 mb-4">پشتیبانی تحصیلی</h3>
+                <p class="text-slate-600 text-sm mb-4">
+                    نخبگی علمی خط قرمز ماست. برنامه تحصیلی طوری طراحی شده که به درس لطمه نزند.
+                </p>
+                <div class="bg-blue-50 p-3 rounded text-sm text-blue-800 mb-2">
+                    <strong>📍 مکان:</strong> مسجد امام سجاد (ع)
+                </div>
+                <div class="bg-blue-50 p-3 rounded text-sm text-blue-800">
+                    <strong>⏰ زمان:</strong> پنج‌شنبه‌ها ۸ الی ۱۳
+                </div>
+            </div>
+            <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-lg">
+                 <div class="flex flex-col md:flex-row items-center gap-8 h-full">
+                    <div class="w-full md:w-1/2">
+                         <h4 class="text-center font-bold text-slate-700 mb-2">زمان‌بندی تحصیلی</h4>
+                         <!-- Chart Container -->
+                        <div class="chart-container" style="max-height: 250px;">
+                            <canvas id="academicChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2 space-y-4">
+                        <div class="flex items-start gap-3">
+                            <div class="w-4 h-4 bg-blue-600 rounded-full mt-1 shrink-0"></div>
+                            <div>
+                                <h5 class="font-bold text-slate-800">قرائت‌خانه (تمرکز)</h5>
+                                <p class="text-xs text-slate-500">مطالعه عمیق در فضای آرام مسجد</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-4 h-4 bg-amber-500 rounded-full mt-1 shrink-0"></div>
+                            <div>
+                                <h5 class="font-bold text-slate-800">کلاس رفع اشکال</h5>
+                                <p class="text-xs text-slate-500">ویژه امتحانات خرداد و دی ماه</p>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Timeline (CSS Implementation) -->
+        <section class="relative py-10">
+            <h3 class="text-3xl font-bold text-center text-blue-900 mb-12">تقویم اجرایی (فصل اول)</h3>
+            
+            <div class="relative max-w-3xl mx-auto">
+                <!-- Vertical Line -->
+                <div class="absolute right-4 md:right-1/2 h-full w-1 bg-slate-300 transform md:translate-x-1/2"></div>
+
+                <!-- Item 1 -->
+                <div class="relative flex flex-col md:flex-row items-center justify-between mb-8 group">
+                    <div class="hidden md:block w-5/12 text-left pl-8">
+                        <h4 class="text-xl font-bold text-teal-700">شروع قدرتمند</h4>
+                        <p class="text-slate-500">مصاحبه و افتتاحیه</p>
+                    </div>
+                    <div class="absolute right-1 md:right-1/2 transform md:translate-x-1/2 w-7 h-7 bg-amber-500 rounded-full border-4 border-white z-10 shadow"></div>
+                    <div class="w-full md:w-5/12 mr-8 md:mr-0 md:pl-0 md:pr-8 bg-white p-4 rounded-lg shadow-md border-r-4 md:border-r-0 md:border-l-4 border-amber-500">
+                        <span class="text-xs font-bold text-amber-600 block mb-1">۲۹ بهمن و اسفند ۱۴۰۴</span>
+                        <h4 class="font-bold text-slate-800 md:hidden">شروع قدرتمند</h4>
+                        <p class="text-sm text-slate-600">برگزاری اردو-مصاحبه، گزینش نهایی و شروع برنامه‌ها با محافل رمضانی.</p>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="relative flex flex-col md:flex-row items-center justify-between mb-8 group">
+                    <div class="order-2 md:order-1 w-full md:w-5/12 mr-8 md:mr-0 md:pl-8 bg-white p-4 rounded-lg shadow-md border-r-4 border-teal-600">
+                        <span class="text-xs font-bold text-teal-600 block mb-1">فروردین ۱۴۰۵</span>
+                        <h4 class="font-bold text-slate-800 md:hidden">نوروز و مهارت</h4>
+                        <p class="text-sm text-slate-600">ویژه‌برنامه‌های معنوی نوروز و آغاز جدی کلاس‌های Word و مهارت پس از تعطیلات.</p>
+                    </div>
+                    <div class="absolute right-1 md:right-1/2 transform md:translate-x-1/2 w-7 h-7 bg-teal-600 rounded-full border-4 border-white z-10 shadow order-1 md:order-2"></div>
+                    <div class="hidden md:block order-3 w-5/12 text-right pr-8">
+                        <h4 class="text-xl font-bold text-teal-700">نوروز و مهارت</h4>
+                        <p class="text-slate-500">استارت جدی آموزش</p>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="relative flex flex-col md:flex-row items-center justify-between mb-8 group">
+                    <div class="hidden md:block w-5/12 text-left pl-8">
+                        <h4 class="text-xl font-bold text-teal-700">اوج فعالیت</h4>
+                        <p class="text-slate-500">ورزش و تخصص</p>
+                    </div>
+                    <div class="absolute right-1 md:right-1/2 transform md:translate-x-1/2 w-7 h-7 bg-teal-600 rounded-full border-4 border-white z-10 shadow"></div>
+                    <div class="w-full md:w-5/12 mr-8 md:mr-0 md:pl-0 md:pr-8 bg-white p-4 rounded-lg shadow-md border-r-4 md:border-r-0 md:border-l-4 border-teal-600">
+                        <span class="text-xs font-bold text-teal-600 block mb-1">اردیبهشت ۱۴۰۵</span>
+                        <h4 class="font-bold text-slate-800 md:hidden">اوج فعالیت</h4>
+                        <p class="text-sm text-slate-600">اوج‌گیری کلاس‌های مهارتی، برگزاری اردوهای کوهنوردی و شنا.</p>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="relative flex flex-col md:flex-row items-center justify-between mb-8 group">
+                    <div class="order-2 md:order-1 w-full md:w-5/12 mr-8 md:mr-0 md:pl-8 bg-white p-4 rounded-lg shadow-md border-r-4 border-blue-600">
+                        <span class="text-xs font-bold text-blue-600 block mb-1">خرداد ۱۴۰۵</span>
+                        <h4 class="font-bold text-slate-800 md:hidden">فصل امتحانات</h4>
+                        <p class="text-sm text-slate-600">کاهش برنامه‌های جانبی و تمرکز کامل بر قرائت‌خانه و امتحانات.</p>
+                    </div>
+                    <div class="absolute right-1 md:right-1/2 transform md:translate-x-1/2 w-7 h-7 bg-blue-600 rounded-full border-4 border-white z-10 shadow order-1 md:order-2"></div>
+                    <div class="hidden md:block order-3 w-5/12 text-right pr-8">
+                        <h4 class="text-xl font-bold text-blue-600">فصل امتحانات</h4>
+                        <p class="text-slate-500">حمایت تحصیلی کامل</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-white py-8 text-center mt-12">
+        <p class="font-bold text-lg mb-2">هیئت مکتب‌الشهدا</p>
+        <p class="text-sm opacity-60">© ۱۴۰۴ - تمامی حقوق طرح نخبه‌پروری جوانه محفوظ است.</p>
+        <p class="text-xs opacity-40 mt-4">Designed for Data Visualization | No SVG Used</p>
+    </footer>
+
+    <script>
+        // --- Utility: Label Wrapping Logic (Mandatory > 16 chars) ---
+        function wrapLabel(label) {
+            if (typeof label !== 'string' || label.length <= 16) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + 1 + words[i].length <= 16) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // --- Utility: Tooltip Callback Configuration (Mandatory) ---
+        const commonTooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // --- Common Chart Options ---
+        Chart.defaults.font.family = "'Vazirmatn', sans-serif";
+        Chart.defaults.color = '#475569';
+
+        // 1. Selection Funnel Chart (Bar Chart pretending to be funnel)
+        // Data: Applicants (100%), Selected for Interview (50%), Final Admission (25% - estimate)
+        const ctxSelection = document.getElementById('selectionChart').getContext('2d');
+        const selectionLabels = ['کل معتکفین', 'منتخبین اولیه (IQ/EQ)', 'پذیرفته‌شدگان نهایی'].map(wrapLabel);
+        
+        new Chart(ctxSelection, {
+            type: 'bar',
+            data: {
+                labels: selectionLabels,
+                datasets: [{
+                    label: 'تعداد نفرات (درصد)',
+                    data: [100, 50, 25],
+                    backgroundColor: [
+                        '#cbd5e1', // Grey
+                        '#d97706', // Amber (Focus)
+                        '#0f766e'  // Teal (Success)
+                    ],
+                    borderRadius: 8,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y', // Horizontal funnel look
+                plugins: {
+                    legend: { display: false },
+                    tooltip: commonTooltipConfig,
+                    title: {
+                        display: true,
+                        text: 'نرخ ریزش و پذیرش در طرح'
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: { display: true, text: 'درصد جمعیت' }
+                    }
+                }
+            }
+        });
+
+        // 2. Pillars Chart (Polar Area)
+        // Data: 4 Pillars, Equal weight visually to show balance, or slight variance based on activity count
+        const ctxPillars = document.getElementById('pillarsChart').getContext('2d');
+        const pillarLabels = ['معرفتی (هیئت/حلقه)', 'تحصیلی (درس)', 'مهارتی (فنی/نرم)', 'ورزشی (نشاط)'].map(wrapLabel);
+
+        new Chart(ctxPillars, {
+            type: 'polarArea',
+            data: {
+                labels: pillarLabels,
+                datasets: [{
+                    label: 'امتیاز اهمیت',
+                    data: [25, 20, 25, 20], // Rough distribution of focus
+                    backgroundColor: [
+                        'rgba(15, 118, 110, 0.7)', // Teal
+                        'rgba(37, 99, 235, 0.7)',  // Blue
+                        'rgba(217, 119, 6, 0.7)',  // Amber
+                        'rgba(225, 29, 72, 0.7)'   // Rose
+                    ],
+                    borderColor: '#fff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 12 } },
+                    tooltip: commonTooltipConfig
+                },
+                scales: {
+                    r: {
+                        ticks: { display: false },
+                        grid: { color: '#e2e8f0' }
+                    }
+                }
+            }
+        });
+
+        // 3. Skills Breakdown (Horizontal Bar)
+        // Data: List of skills mentioned
+        const ctxSkills = document.getElementById('skillsChart').getContext('2d');
+        const skillLabels = ['ICDL & Word', 'هوش مصنوعی (AI)', 'برق‌کشی ساختمان', 'عکاسی و تدوین', 'زبان انگلیسی', 'کمک‌های اولیه'].map(wrapLabel);
+
+        new Chart(ctxSkills, {
+            type: 'bar',
+            data: {
+                labels: skillLabels,
+                datasets: [{
+                    label: 'سطح اولویت آموزش',
+                    data: [90, 85, 70, 60, 50, 40], // Mock priority based on "Word emphasis" in text
+                    backgroundColor: '#fbbf24', // Amber-400
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: commonTooltipConfig
+                },
+                scales: {
+                    x: { display: false }, // Cleaner look
+                    y: { 
+                        ticks: { color: '#ffffff', font: { size: 12 } },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // 4. Academic Support (Doughnut)
+        // Data: Study Hall vs Tutoring
+        const ctxAcademic = document.getElementById('academicChart').getContext('2d');
+        const academicLabels = ['قرائت‌خانه (پنج‌شنبه‌ها)', 'کلاس رفع اشکال (امتحانات)'].map(wrapLabel);
+
+        new Chart(ctxAcademic, {
+            type: 'doughnut',
+            data: {
+                labels: academicLabels,
+                datasets: [{
+                    data: [75, 25], // More time in study hall generally
+                    backgroundColor: ['#2563eb', '#f59e0b'], // Blue, Amber
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }, // Custom legend in HTML
+                    tooltip: commonTooltipConfig
+                },
+                cutout: '60%'
+            }
+        });
+
+    </script>
+</body>
+</html>
