@@ -11,411 +11,459 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/dist/font-face.css" rel="stylesheet" type="text/css" />
 
     <style>
-        /* تنظیمات پایه فونت و اسکرول */
         body {
             font-family: 'Vazirmatn', sans-serif;
-            background-color: #f8fafc;
+            background-color: #f1f5f9;
             scroll-behavior: smooth;
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* استایل ظروف نگهدارنده نمودارها جهت حفظ واکنش‌گرایی */
+        /* اصلاح اسکرول برای منوی ثابت */
+        section {
+            scroll-margin-top: 80px;
+        }
+
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 500px;
+            max-width: 450px;
             margin: auto;
-            height: 300px;
+            height: 250px;
         }
 
-        /* انیمیشن مرحله‌ای بخش گزینش نخبگان */
+        /* انیمیشن مرحله‌ای بخش گزینش */
         .funnel-step {
-            transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 1s ease;
-            transform: translateY(40px) scale(0.95);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            transform: translateY(30px);
             opacity: 0;
         }
         .funnel-step.active {
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
             opacity: 1;
         }
 
-        /* استایل لایه بارگذاری اولیه صفحه */
         #loading-overlay {
             position: fixed;
             inset: 0;
-            background: #1e3a8a;
+            background: #0f172a;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            transition: opacity 0.6s ease;
+            transition: opacity 0.5s ease;
         }
 
-        /* افکت شیشه‌ای برای کارت‌های مهارتی */
-        .glass {
-            background: rgba(255, 255, 255, 0.1);
+        /* افکت‌های شیشه‌ای و مدرن */
+        .glass-dark {
+            background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* گرادینت اختصاصی برند کانون رشد */
+        .glass-light {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
         .hero-gradient {
-            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #0d9488 100%);
+            background: radial-gradient(circle at top right, #1e40af, #0f172a);
         }
 
-        /* تعریف استایل بخش‌های تمام‌صفحه */
+        .camp-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+        }
+
         .full-page-section {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            position: relative;
-            padding: 100px 24px 120px 24px; /* پدینگ پایین بیشتر برای عدم تداخل با دکمه */
+            padding: 110px 24px 80px 24px;
         }
 
-        /* دکمه ناوبری بخش بعد با انیمیشن پرش */
+        /* دکمه ناوبری */
         .next-section-btn {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
+            margin-top: 30px;
             animation: bounceCustom 2s infinite;
             cursor: pointer;
-            z-index: 50;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-decoration: none;
-            color: inherit;
+            transition: transform 0.3s;
         }
 
         @keyframes bounceCustom {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
-            40% { transform: translateY(-10px) translateX(-50%); }
-            60% { transform: translateY(-5px) translateX(-50%); }
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
 
-        /* تنظیمات ابعاد لوگوها */
-        .logo-nav { height: 45px; width: 45px; object-fit: contain; }
-        .logo-hero { height: 140px; width: 140px; object-fit: contain; margin-bottom: 24px; }
+        /* تایپوگرافی موبایل */
+        @media (max-width: 640px) {
+            .full-page-section { padding-top: 100px; padding-bottom: 40px; }
+            h1 { font-size: 2.2rem !important; }
+            h2 { font-size: 1.8rem !important; }
+        }
     </style>
 </head>
-<body class="text-slate-800">
+<body class="text-slate-800 antialiased selection:bg-amber-500 selection:text-white">
 
-<!-- لودینگ ابتدایی -->
+<!-- لودینگ -->
 <div id="loading-overlay">
-    <div class="text-center text-white">
-        <div class="inline-block w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-        <p class="text-xl font-bold italic">کانون رشد مکتب یار تفت</p>
+    <div class="flex flex-col items-center">
+        <div class="relative w-16 h-16">
+            <div class="absolute inset-0 border-4 border-slate-700 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-amber-500 rounded-full border-t-transparent animate-spin"></div>
+        </div>
+        <p class="text-white mt-4 text-sm tracking-[0.2em] font-light animate-pulse">JAVANEH ACADEMY</p>
     </div>
 </div>
 
-<!-- منوی ناوبری ثابت -->
-<nav class="fixed top-0 left-0 right-0 bg-blue-900/95 backdrop-blur-md text-white z-50 shadow-lg">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="flex justify-between items-center h-20">
+<!-- منوی ناوبری مدرن -->
+<nav class="fixed top-4 left-4 right-4 bg-white/90 backdrop-blur-md border border-slate-200/60 text-slate-900 z-50 shadow-lg shadow-slate-200/50 rounded-2xl transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 lg:px-6">
+        <div class="flex justify-between items-center h-14 md:h-16">
             <div class="flex items-center gap-3">
-                <img src="http://googleusercontent.com/image_generation_content/1" alt="لوگو کانون رشد" class="logo-nav">
-                <span class="font-bold text-lg">کانون رشد مکتب یار</span>
+                <div class="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center shadow-md">
+                    <span class="text-white text-xs font-black">رشد</span>
+                </div>
+                <span class="font-bold text-sm md:text-base tracking-tight text-slate-800">آکادمی رشد مکتب یار</span>
             </div>
-            <div class="hidden md:flex gap-4 lg:gap-8 text-sm font-medium">
-                <a href="#intro" class="hover:text-amber-400 transition-colors">کانون</a>
-                <a href="#about" class="hover:text-amber-400 transition-colors">طرح جوانه</a>
-                <a href="#selection" class="hover:text-amber-400 transition-colors">گزینش</a>
-                <a href="#spiritual" class="hover:text-amber-400 transition-colors">معرفتی</a>
-                <a href="#academic" class="hover:text-amber-400 transition-colors">تحصیلی</a>
-                <a href="#skills" class="hover:text-amber-400 transition-colors">مهارتی</a>
-                <a href="#sports" class="hover:text-amber-400 transition-colors">ورزشی</a>
+            <!-- منوی دسکتاپ -->
+            <div class="hidden lg:flex gap-6 text-xs font-bold text-slate-500">
+                <a href="#about" class="hover:text-blue-600 transition-colors">درباره طرح</a>
+                <a href="#selection" class="hover:text-blue-600 transition-colors">گزینش</a>
+                <a href="#camp" class="hover:text-amber-600 transition-colors">اردوی مصاحبه</a>
+            </div>
+            <!-- بج موبایل -->
+            <div class="lg:hidden text-[10px] bg-slate-100 border border-slate-200 px-3 py-1 rounded-full font-bold text-slate-500">
+                ویژه والدین
             </div>
         </div>
     </div>
 </nav>
 
-<!-- بخش ۱: هویت کانون رشد مکتب یار -->
-<section id="intro" class="full-page-section hero-gradient text-white">
-    <div class="max-w-4xl mx-auto relative z-10 text-center px-4">
-        <img src="http://googleusercontent.com/image_generation_content/1" alt="لوگو کانون رشد" class="logo-hero">
-        <h1 class="text-5xl md:text-8xl font-black mb-8 leading-tight">کانون رشد مکتب یار</h1>
-        <div class="bg-white/10 backdrop-blur-md p-8 md:p-12 rounded-[3rem] border border-white/20 shadow-2xl">
-            <h2 class="text-2xl md:text-4xl font-bold text-amber-400 mb-6">وابسته به هیئت مکتب الشهدا شهرستان تفت</h2>
-            <p class="text-xl md:text-3xl leading-relaxed font-medium text-blue-50">
-                مرکز تخصصی و آکادمی رشد ویژه نوجوانان با رویکرد تربیت نخبگان در عرصه‌های دینی، علمی و اجتماعی.
+<!-- بخش ۱: کاور اصلی -->
+<section id="intro" class="full-page-section hero-gradient text-white relative overflow-hidden">
+    <!-- پترن پس‌زمینه -->
+    <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+
+    <div class="max-w-4xl mx-auto text-center px-4 relative z-10">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/10 backdrop-blur-md mb-8">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span class="text-xs font-medium text-blue-100">ابلاغیه نخبگان ۱۴۰۴</span>
+        </div>
+
+        <h1 class="text-5xl md:text-8xl font-black mb-6 leading-tight tracking-tight">
+            طرح نخبه پروری
+            <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-400">جــوانــه</span>
+        </h1>
+
+        <div class="glass-dark p-6 md:p-10 rounded-3xl shadow-2xl mx-auto max-w-2xl">
+            <p class="text-lg md:text-xl leading-relaxed text-slate-200 font-medium">
+                فرزند شما در لیست طلایی!
+                <br>
+                <span class="text-sm md:text-base opacity-70 mt-2 block font-normal">
+                    دعوت‌نامه رسمی حضور در مرحله مصاحبه تخصصی آکادمی رشد مکتب یار
+                </span>
             </p>
         </div>
-        <div>
-            <a href="#about" class="next-section-btn text-white opacity-61 hover:opacity-100 transition-opacity">
-                <span class="text-sm mb-2">معرفی طرح جوانه</span>
-                <span class="text-5xl font-bold">↓</span>
-            </a> 
-        </div>
- 
-    </div>
-</section>
 
-<!-- بخش ۲: معرفی کلی طرح جوانه -->
-<section id="about" class="full-page-section bg-white text-center">
-    <div class="max-w-4xl mx-auto px-6">
-        <img src="http://googleusercontent.com/image_generation_content/0" alt="لوگو جوانه" class="logo-hero">
-        <h2 class="text-5xl md:text-7xl font-black text-blue-900 mb-8">طرح نخبه‌پروری جوانه</h2>
-        <div class="w-24 h-2 bg-amber-500 mx-auto rounded-full mb-10"></div>
-        <p class="text-2xl md:text-4xl leading-loose text-slate-700 font-bold mb-12">
-            طرح نخبه پروری جوانه قصد داره دانش آموزانی پیش رو و اثر گذار تربیت کنه در عرصه‌های معنوی، مهارتی، علمی و ورزشی.
-        </p>
-        <div class="inline-block bg-blue-950 text-white px-10 py-4 rounded-3xl font-black text-xl shadow-xl shadow-blue-200">
-            سال تحصیلی ۱۴۰۴-۱۴۰۵
-        </div>
-        <a href="#selection" class="next-section-btn text-blue-900 opacity-40 hover:opacity-100 transition-opacity">
-            <span class="text-sm mb-1">مشاهده فرآیند گزینش</span>
-            <span class="text-4xl font-bold">↓</span>
+        <a href="#about" class="next-section-btn text-slate-300 hover:text-white transition-colors">
+            <span class="text-[10px] uppercase tracking-widest mb-2">معرفی طرح</span>
+            <svg class="w-6 h-6 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
         </a>
     </div>
 </section>
 
-<!-- بخش ۳: فرآیند گزینش و آمارها -->
+<!-- بخش ۲: درباره طرح -->
+<section id="about" class="full-page-section bg-white text-center relative">
+    <div class="max-w-3xl mx-auto px-6">
+        <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mb-8 mx-auto shadow-sm">🌿</div>
+
+        <h2 class="text-3xl md:text-5xl font-black text-slate-900 mb-8">ماجرای جوانه چیست؟</h2>
+
+        <p class="text-lg md:text-2xl leading-loose text-slate-600 font-medium mb-10 text-justify md:text-center">
+            طرح نخبه پروری جوانه یک دوره یک‌ساله ویژه است که قصد دارد از بین نوجوانان مستعد، افرادی پیشرو و اثرگذار در ۴ محور <span class="text-blue-600 font-bold bg-blue-50 px-2 rounded">معرفتی، مهارتی، تحصیلی و نشاط</span> تربیت کند.
+        </p>
+
+        <div class="grid grid-cols-2 gap-4 text-sm font-bold text-slate-500">
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                <span class="block text-slate-900 text-lg mb-1">۴ محور</span>
+                تمرکز طرح
+            </div>
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                <span class="block text-slate-900 text-lg mb-1">یک سال</span>
+                مدت دوره
+            </div>
+        </div>
+
+        <a href="#selection" class="next-section-btn text-slate-400 hover:text-blue-600">
+            <span class="text-[10px] mb-2">فرآیند انتخاب</span>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </a>
+    </div>
+</section>
+
+<!-- بخش ۳: قیف گزینش -->
 <section id="selection" class="full-page-section bg-slate-50">
-    <div class="max-w-7xl mx-auto px-6 w-full text-center">
-        <h2 class="text-4xl font-black text-blue-900 mb-4">مسیر ورود به طرح نخبه پروری جوانه</h2>
-        <div class="w-16 h-1.5 bg-amber-500 mx-auto rounded-full mb-16"></div>
+    <div class="max-w-6xl mx-auto px-4 w-full text-center">
+        <h2 class="text-2xl md:text-4xl font-black text-slate-900 mb-4">مسیر نخبگان (قیف گزینش)</h2>
+        <p class="text-slate-500 mb-12 text-sm md:text-base">فرآیند انتخاب از بین ۱۶۰ نفر تا ۴۰ نفر نهایی</p>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-            <!-- مرحله ۱: معتکفین -->
-            <div id="step1" class="funnel-step bg-white p-10 rounded-[3.5rem] shadow-xl border-t-8 border-slate-300 relative group flex flex-col items-center justify-between transition-all hover:scale-105 hover:shadow-2xl">
-                <div class="flex items-baseline justify-center gap-1 text-slate-300 group-hover:text-slate-500 transition-colors">
-                    <span class="text-7xl md:text-8xl font-black" id="count1">0</span>
-                    <span class="text-xl font-bold opacity-60">نفر</span>
+        <div class="flex flex-col md:flex-row justify-center items-center gap-6 relative">
+            <!-- خط اتصال در دسکتاپ -->
+            <div class="hidden md:block absolute top-1/2 left-10 right-10 h-1 bg-slate-200 -z-10 rounded-full"></div>
+
+            <!-- گام ۱ -->
+            <div id="step1" class="funnel-step w-full md:w-1/3 glass-light p-6 rounded-3xl border-b-4 border-slate-300 flex flex-col items-center">
+                <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4 text-2xl font-black text-slate-400 shadow-inner">
+                    <span id="count1">0</span>
                 </div>
-                <h3 class="font-black text-slate-800 my-4 text-xl">معتکفین اولیه</h3>
-                <div class="w-full h-px bg-slate-100 mb-4"></div>
-                <p class="text-sm text-slate-500 leading-relaxed font-bold">
-                    تعداد دانش‌آموزان شرکت‌کننده در اعتکاف رمضانیه ۱۴۰۴ <br>
-                    <span class="text-blue-600">"تا آسمان راهی نیست ۶"</span>
+                <h3 class="font-bold text-slate-800 mb-2">جامعه آماری اولیه</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    شرکت‌کنندگان در اعتکاف رمضانیه ۱۴۰۴
                 </p>
             </div>
 
-            <!-- مرحله ۲: مصاحبه -->
-            <div id="step2" class="funnel-step bg-white p-10 rounded-[3.5rem] shadow-xl border-t-8 border-amber-500 relative group flex flex-col items-center justify-between transition-all hover:scale-105 hover:shadow-2xl">
-                <div class="flex items-baseline justify-center gap-1 text-amber-500 group-hover:text-amber-600 transition-colors">
-                    <span class="text-7xl md:text-8xl font-black" id="count2">0</span>
-                    <span class="text-xl font-bold opacity-80">نفر</span>
+            <!-- گام ۲ (تاکید شده) -->
+            <div id="step2" class="funnel-step w-full md:w-1/3 bg-white p-8 rounded-[2rem] shadow-xl border-b-4 border-amber-500 flex flex-col items-center transform md:-translate-y-4 relative z-10">
+                <div class="absolute -top-3 bg-amber-500 text-white text-[10px] px-3 py-1 rounded-full font-bold tracking-wider">شما اینجایید</div>
+                <div class="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center mb-4 text-4xl font-black text-amber-500 shadow-inner">
+                    <span id="count2">0</span>
                 </div>
-                <h3 class="font-black text-amber-800 my-4 text-xl">دعوت به مصاحبه</h3>
-                <div class="w-full h-px bg-slate-100 mb-4"></div>
-                <p class="text-sm text-slate-500 leading-relaxed font-bold">
-                    گزینش اولیه طبق ارزیابی مربیان بر اساس شاخص‌های هوش اجتماعی و هوش تحلیلی
+                <h3 class="font-black text-amber-800 text-lg mb-2">لیست طلایی مصاحبه</h3>
+                <p class="text-xs text-slate-500 font-medium mb-3">
+                    منتخبین دارای هوش اجتماعی و روحیه تشکیلاتی
+                </p>
+                <a href="#camp" class="bg-amber-100 text-amber-800 px-4 py-2 rounded-lg text-sm font-bold w-full hover:bg-amber-200 transition-colors">
+                    🗓 ۲۹ بهمن: اردوی چالش
+                </a>
+            </div>
+
+            <!-- گام ۳ -->
+            <div id="step3" class="funnel-step w-full md:w-1/3 glass-light p-6 rounded-3xl border-b-4 border-blue-600 flex flex-col items-center">
+                <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-4 text-2xl font-black text-blue-600 shadow-inner">
+                    <span id="count3">0</span>
+                </div>
+                <h3 class="font-bold text-blue-900 mb-2">نخبگان نهایی</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    ورود به آکادمی رشد مکتب یار
                 </p>
             </div>
+        </div>
 
-            <!-- مرحله ۳: پذیرفته‌شدگان -->
-            <div id="step3" class="funnel-step bg-blue-900 p-10 rounded-[3.5rem] shadow-xl border-t-8 border-teal-400 relative text-white group flex flex-col items-center justify-between transition-all hover:scale-105 hover:shadow-2xl">
-                <div class="flex items-baseline justify-center gap-1 text-teal-400 group-hover:text-teal-300 transition-colors">
-                    <span class="text-7xl md:text-9xl font-black" id="count3">0</span>
-                    <span class="text-xl font-bold opacity-90">نفر</span>
-                </div>
-                <h3 class="font-black my-4 text-xl text-white">ورودی نهایی</h3>
-                <div class="w-full h-px bg-white/10 mb-4"></div>
-                <p class="text-sm opacity-80 leading-relaxed font-bold">
-                    منتخبین برگزیده جهت حضور در دوره یک‌ساله آکادمی رشد
+        <a href="#pillars" class="next-section-btn text-slate-400 hover:text-blue-600">
+            <span class="text-[10px] mb-2">جزییات ۴ رکن</span>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </a>
+    </div>
+</section>
+
+<!-- بخش ۴: اسلایدر ارکان -->
+<section id="pillars" class="full-page-section bg-white text-center">
+    <div class="max-w-6xl mx-auto w-full">
+        <h2 class="text-3xl font-black text-slate-900 mb-12">در آکادمی چه می‌گذرد؟</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-right">
+
+            <!-- رکن ۱: مهارتی -->
+            <div class="group relative bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:border-amber-400 transition-colors">
+                <div class="absolute top-6 left-6 text-4xl opacity-20 group-hover:opacity-100 transition-opacity">🛠</div>
+                <h3 class="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="w-2 h-8 bg-amber-400 rounded-full"></span>
+                    رکن مهارتی
+                </h3>
+                <p class="text-slate-600 text-sm mb-4 leading-relaxed">
+                    تمرکز بر یادگیری مهارت‌هایی که آینده‌ساز هستند.
                 </p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-white rounded-lg text-xs font-bold text-slate-500 shadow-sm">مهارت‌های پول‌ساز</span>
+                    <span class="px-3 py-1 bg-white rounded-lg text-xs font-bold text-slate-500 shadow-sm">مهارت‌های عمومی</span>
+                </div>
             </div>
+
+            <!-- رکن ۲: تحصیلی -->
+            <div class="group relative bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:border-blue-600 transition-colors">
+                <div class="absolute top-6 left-6 text-4xl opacity-20 group-hover:opacity-100 transition-opacity">📚</div>
+                <h3 class="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="w-2 h-8 bg-blue-600 rounded-full"></span>
+                    رکن تحصیلی
+                </h3>
+                <p class="text-slate-600 text-sm mb-4 leading-relaxed">
+                    ایجاد فضای رشد تحصیلی خارج از مدرسه.
+                </p>
+                <div class="grid grid-cols-2 gap-2 text-xs font-bold text-slate-500">
+                    <div class="bg-white px-3 py-2 rounded-lg shadow-sm flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 bg-blue-400 rounded-full"></span> قرائت‌خانه
+                    </div>
+                    <div class="bg-white px-3 py-2 rounded-lg shadow-sm flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 bg-blue-400 rounded-full"></span> مشاوره تخصصی
+                    </div>
+                    <div class="bg-white px-3 py-2 rounded-lg shadow-sm flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 bg-blue-400 rounded-full"></span> آشنایی با رشته‌ها
+                    </div>
+                    <div class="bg-white px-3 py-2 rounded-lg shadow-sm flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 bg-blue-400 rounded-full"></span> آمادگی امتحانات
+                    </div>
+                </div>
+            </div>
+
+            <!-- رکن ۳: معرفتی -->
+            <div class="group relative bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:border-teal-500 transition-colors">
+                <div class="absolute top-6 left-6 text-4xl opacity-20 group-hover:opacity-100 transition-opacity">📿</div>
+                <h3 class="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="w-2 h-8 bg-teal-500 rounded-full"></span>
+                    رکن معرفتی
+                </h3>
+                <p class="text-slate-600 text-sm mb-4 leading-relaxed">
+                    رشد معنوی دانش‌آموزان در بستر هیئت با نگاهی نو.
+                </p>
+                <div class="bg-teal-50 p-3 rounded-xl text-xs text-teal-800 leading-relaxed font-medium">
+                    «تعریف خاص و متفاوت از فعالیت در هیئت برای نوجوانان»
+                </div>
+            </div>
+
+            <!-- رکن ۴: نشاط -->
+            <div class="group relative bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:border-rose-500 transition-colors">
+                <div class="absolute top-6 left-6 text-4xl opacity-20 group-hover:opacity-100 transition-opacity">⚽️</div>
+                <h3 class="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="w-2 h-8 bg-rose-500 rounded-full"></span>
+                    رکن نشاط
+                </h3>
+                <p class="text-slate-600 text-sm mb-4 leading-relaxed">
+                    لازمه رشد فردی و توسعه شخصیتی هر نوجوان.
+                </p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-white rounded-lg text-xs font-bold text-slate-500 shadow-sm">نشاط و سلامتی</span>
+                    <span class="px-3 py-1 bg-white rounded-lg text-xs font-bold text-slate-500 shadow-sm">کار تیمی</span>
+                    <span class="px-3 py-1 bg-white rounded-lg text-xs font-bold text-slate-500 shadow-sm">فوق برنامه تفریحی و اردو</span>
+                </div>
+            </div>
+
         </div>
+        <a href="#camp" class="next-section-btn text-slate-400 hover:text-amber-500">
+            <span class="text-[10px] mb-2 font-bold text-amber-600">اطلاعات اردوی مصاحبه</span>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </a>
     </div>
-    <a href="#spiritual" class="next-section-btn text-blue-900 opacity-40 hover:opacity-100 transition-opacity">
-        <span class="text-sm mb-1">ارکان طرح</span>
-        <span class="text-4xl font-bold">↓</span>
-    </a>
 </section>
 
-<!-- بخش ۴: رکن معرفتی -->
-<section id="spiritual" class="full-page-section bg-amber-50">
-    <div class="max-w-5xl mx-auto px-6 w-full text-center">
-        <div class="w-24 h-24 bg-amber-100 text-amber-600 rounded-[2rem] flex items-center justify-center font-black mx-auto mb-8 text-4xl shadow-sm">۱</div>
-        <h2 class="text-5xl md:text-7xl font-black text-blue-900 mb-8">رکن معرفتی</h2>
-        <p class="text-2xl md:text-3xl text-slate-600 leading-relaxed mb-16 max-w-3xl mx-auto font-medium">
-            تعمیق باورهای دینی و رشد معنوی و تشکیلاتی در متن فعالیت‌های هفتگی هیئت مکتب‌الشهدا و حلقه‌های انس.
-        </p>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-10 rounded-3xl shadow-lg border-b-8 border-amber-500 hover:transform hover:-translate-y-2 transition-all">
-                <h4 class="font-black text-2xl mb-4 text-blue-900">هیئت هفتگی</h4>
-                <p class="text-slate-500 leading-relaxed">برگزاری محافل منظم معنوی و تشکیلاتی جهت انس با معارف اهل‌بیت (ع).</p>
-            </div>
-            <div class="bg-white p-10 rounded-3xl shadow-lg border-b-8 border-amber-500 hover:transform hover:-translate-y-2 transition-all">
-                <h4 class="font-black text-2xl mb-4 text-blue-900">تدبر در قرآن</h4>
-                <p class="text-slate-500 leading-relaxed">فهم کاربردی کلام وحی و کاربردی‌سازی آموزه‌های قرآنی در زندگی.</p>
-            </div>
-            <div class="bg-white p-10 rounded-3xl shadow-lg border-b-8 border-amber-500 hover:transform hover:-translate-y-2 transition-all">
-                <h4 class="font-black text-2xl mb-4 text-blue-900">حلقه‌های انس</h4>
-                <p class="text-slate-500 leading-relaxed">گفتگوهای صمیمی، فکری و مربی‌محور پیرامون چالش‌های نوجوانی.</p>
-            </div>
+<!-- بخش جدید: اردوی مصاحبه -->
+<section id="camp" class="full-page-section camp-gradient text-white">
+    <div class="max-w-4xl mx-auto px-6 w-full text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/20 border border-amber-500/40 backdrop-blur-md mb-8">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span class="text-xs font-bold text-amber-400">مرحله نهایی گزینش</span>
         </div>
-    </div>
-    <a href="#academic" class="next-section-btn text-amber-700 opacity-60 hover:opacity-100 transition-opacity">
-        <span class="text-sm mb-1">بخش تحصیلی</span>
-        <span class="text-4xl font-bold">↓</span>
-    </a>
-</section>
 
-<!-- بخش ۵: رکن تحصیلی -->
-<section id="academic" class="full-page-section bg-blue-50">
-    <div class="max-w-6xl mx-auto px-6 w-full text-center">
-        <div class="w-24 h-24 bg-blue-100 text-blue-600 rounded-[2rem] flex items-center justify-center font-black mx-auto mb-8 text-4xl shadow-sm">۲</div>
-        <h2 class="text-5xl md:text-7xl font-black text-blue-900 mb-8">رکن تحصیلی</h2>
-        <p class="text-2xl md:text-3xl text-slate-600 leading-relaxed mb-16 font-medium">
-            حمایت علمی نخبگان در قرارگاه علمی مسجد امام سجاد (ع) همراه با رفع اشکال تخصصی.
-        </p>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div class="bg-white p-12 rounded-[4rem] shadow-xl text-right border-r-8 border-blue-600">
-                <h4 class="text-3xl font-black text-blue-900 mb-6">📍 مسجد امام سجاد (ع)</h4>
-                <ul class="space-y-4 text-xl text-slate-600 leading-loose">
-                    <li class="flex items-center gap-3">
-                        <span class="text-blue-600">●</span>
-                        پنج‌شنبه‌ها از ساعت ۸:۰۰ الی ۱۳:۰۰
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <span class="text-blue-600">●</span>
-                        فضای مطالعه متمرکز و آرام
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <span class="text-blue-600">●</span>
-                        حضور مربیان رفع اشکال دروس پایه
-                    </li>
-                </ul>
+        <h2 class="text-3xl md:text-5xl font-black mb-12">اردوی مصاحبه طرح جوانه</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            <!-- کارت زمان -->
+            <div class="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10 flex items-start gap-4 text-right">
+                <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center shrink-0">
+                    <span class="text-2xl">⏰</span>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-1">زمان برگزاری</h4>
+                    <p class="text-slate-300 text-sm">ساعت ۱۵:۳۰ الی ۲۰:۰۰</p>
+                    <span class="text-amber-400 text-xs font-black mt-1 block">⚠️ لطفاً راس ساعت حضور داشته باشید</span>
+                </div>
             </div>
-            <div class="bg-white p-10 rounded-[4rem] shadow-xl">
-                <h4 class="font-bold text-slate-700 mb-4">توزیع تمرکز تحصیلی</h4>
-                <div class="chart-container">
-                    <canvas id="studyChart"></canvas>
+
+            <!-- کارت مکان -->
+            <div class="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10 flex items-start gap-4 text-right">
+                <div class="w-12 h-12 bg-teal-600 rounded-2xl flex items-center justify-center shrink-0">
+                    <span class="text-2xl">📍</span>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-1">مکان برگزاری</h4>
+                    <p class="text-slate-300 text-sm">کانون ولایت شهرستان تفت</p>
+                </div>
+            </div>
+
+            <!-- کارت ملزومات -->
+            <div class="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10 flex items-start gap-4 text-right">
+                <div class="w-12 h-12 bg-rose-600 rounded-2xl flex items-center justify-center shrink-0">
+                    <span class="text-2xl">👟</span>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-1">ملزومات همراه</h4>
+                    <p class="text-slate-300 text-sm">لباس و کفش مناسب ورزش</p>
+                </div>
+            </div>
+
+            <!-- کارت عدم حضور والدین -->
+            <div class="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10 flex items-start gap-4 text-right">
+                <div class="w-12 h-12 bg-slate-600 rounded-2xl flex items-center justify-center shrink-0">
+                    <span class="text-2xl">👨‍👩‍👦</span>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-1">نکته مهم والدین</h4>
+                    <p class="text-slate-300 text-sm">حضور والدین گرامی در این برنامه <span class="text-rose-400 font-bold">نیاز نیست</span>.</p>
                 </div>
             </div>
         </div>
-    </div>
-    <a href="#skills" class="next-section-btn text-blue-800 opacity-60 hover:opacity-100 transition-opacity">
-        <span class="text-sm mb-1">بخش مهارتی</span>
-        <span class="text-4xl font-bold">↓</span>
-    </a>
-</section>
 
-<!-- بخش ۶: رکن مهارتی -->
-<section id="skills" class="full-page-section bg-slate-900 text-white">
-    <div class="max-w-6xl mx-auto px-6 w-full text-center">
-        <div class="w-24 h-24 bg-teal-900 text-teal-400 rounded-[2rem] flex items-center justify-center font-black mx-auto mb-8 text-4xl shadow-sm border border-teal-800">۳</div>
-        <h2 class="text-5xl md:text-7xl font-black text-amber-400 mb-10">رکن مهارتی</h2>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div class="grid grid-cols-2 gap-6 text-right">
-                <div class="glass p-6 rounded-[2.5rem] hover:bg-white/20 transition-all">
-                    <span class="text-amber-400 font-black block mb-2 text-xl">تکنولوژی</span>
-                    <span class="text-base opacity-80 leading-relaxed">هوش مصنوعی، Word، مبانی IT</span>
-                </div>
-                <div class="glass p-6 rounded-[2.5rem] hover:bg-white/20 transition-all">
-                    <span class="text-amber-400 font-black block mb-2 text-xl">فنی & رسانه</span>
-                    <span class="text-base opacity-80 leading-relaxed">برق ساختمان، عکاسی دیجیتال</span>
-                </div>
-                <div class="glass p-6 rounded-[2.5rem] hover:bg-white/20 transition-all">
-                    <span class="text-amber-400 font-black block mb-2 text-xl">رشد فردی</span>
-                    <span class="text-base opacity-80 leading-relaxed">زبان انگلیسی، تندخوانی</span>
-                </div>
-                <div class="glass p-6 rounded-[2.5rem] hover:bg-white/20 transition-all">
-                    <span class="text-amber-400 font-black block mb-2 text-xl">حیاتی</span>
-                    <span class="text-base opacity-80 leading-relaxed">کمک‌های اولیه تخصصی</span>
-                </div>
-            </div>
-            <div class="bg-white/10 backdrop-blur-md p-10 rounded-[4rem] border border-white/10 shadow-inner">
-                <h4 class="font-bold text-amber-400 mb-6 italic">وزن‌دهی آموزشی فصل اول</h4>
-                <div class="chart-container">
-                    <canvas id="skillsChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-    <a href="#sports" class="next-section-btn text-teal-400 opacity-60 hover:opacity-100 transition-opacity">
-        <span class="text-sm mb-1">بخش ورزشی</span>
-        <span class="text-4xl font-bold">↓</span>
-    </a>
-</section>
-
-<!-- صفحه ۷: رکن ورزشی -->
-<section id="sports" class="full-page-section bg-rose-50 text-center">
-    <div class="max-w-5xl mx-auto px-6 w-full">
-        <div class="w-24 h-24 bg-rose-100 text-rose-600 rounded-[2rem] flex items-center justify-center font-black mx-auto mb-8 text-4xl shadow-sm">۴</div>
-        <h2 class="text-5xl md:text-7xl font-black text-rose-900 mb-10">رکن ورزشی و تفریحی</h2>
-        <p class="text-2xl md:text-3xl text-slate-700 leading-relaxed mb-16 font-medium">
-            تقویت روحیه جمعی و سلامت جسمانی نخبگان از طریق آموزش‌های تخصصی و اردوهای پرنشاط.
-        </p>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-12 rounded-[3.5rem] shadow-xl border-r-8 border-rose-500 hover:scale-105 transition-transform">
-                <span class="text-6xl mb-6 block">🏊</span>
-                <h4 class="font-black text-2xl mb-2 text-rose-900">آموزش شنا</h4>
-                <p class="text-slate-500">مهارت‌های پایه و استقامتی</p>
-            </div>
-            <div class="bg-white p-12 rounded-[3.5rem] shadow-xl border-r-8 border-rose-500 hover:scale-105 transition-transform">
-                <span class="text-6xl mb-6 block">🏹</span>
-                <h4 class="font-black text-2xl mb-2 text-rose-900">تیراندازی</h4>
-                <p class="text-slate-500">تمرکز و دقت در هدف‌گیری</p>
-            </div>
-            <div class="bg-white p-12 rounded-[3.5rem] shadow-xl border-r-8 border-rose-500 hover:scale-105 transition-transform">
-                <span class="text-6xl mb-6 block">🏔️</span>
-                <h4 class="font-black text-2xl mb-2 text-rose-900">کوهنوردی</h4>
-                <p class="text-slate-500">صبر، استقامت و کار تیمی</p>
-            </div>
+        <div class="bg-amber-500 text-blue-950 font-black py-4 px-8 rounded-2xl text-lg shadow-lg shadow-amber-500/20 inline-block">
+            منتظر دیدار شما در اردوی ۲۹ بهمن هستیم!
         </div>
     </div>
 </section>
 
 <!-- پاورقی -->
-<footer class="bg-slate-950 text-white py-20 text-center relative overflow-hidden">
-    <div class="max-w-5xl mx-auto px-6 relative z-10">
-        <p class="text-4xl font-black text-amber-500 mb-6 tracking-widest">کانون رشد مکتب یار تفت</p>
-        <p class="text-2xl font-bold opacity-60 mb-10 italic">هیئت مکتب‌الشهدا شهرستان تفت</p>
-        <div class="flex justify-center gap-10 mb-12 opacity-30">
-            <span class="w-20 h-1.5 bg-white rounded-full"></span>
-            <span class="w-20 h-1.5 bg-white rounded-full"></span>
+<footer class="bg-slate-900 text-white py-12 text-center relative overflow-hidden">
+    <div class="max-w-md mx-auto px-6 relative z-10">
+        <p class="text-2xl font-black text-white mb-8">آکادمی رشد مکتب یار تفت</p>
+
+        <div class="w-full h-px bg-slate-800 mb-8"></div>
+
+        <div class="flex items-center justify-center gap-2 opacity-50">
+            <span class="text-xs">هیئت مکتب‌الشهدا تفت</span>
+            <span class="w-1 h-1 bg-white rounded-full"></span>
+            <span class="text-xs">طرح نخبه پروری جوانه ۱۴۰۴</span>
         </div>
-        <p class="text-sm opacity-20 font-mono italic">MAKTEBYAR ACADEMY INFOGRAPHIC | 1404-1405 | NO SVG USED</p>
     </div>
 </footer>
 
 <script>
-    /**
-     * منطق انیمیشن‌های اسکرولی
-     * IntersectionObserver به محض مشاهده بخش گزینش، انیمیشن اعداد را شروع می‌کند.
-     */
+    // مدیریت انیمیشن‌های اسکرولی
     const animationObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 startFunnelAnimation();
-            } else {
-                resetFunnelAnimation();
             }
         });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.3 });
 
     window.onload = function() {
-        // حذف لودینگ پس از بارگذاری کامل منابع
         const overlay = document.getElementById('loading-overlay');
         overlay.style.opacity = '0';
         setTimeout(() => {
             overlay.style.display = 'none';
-            animationObserver.observe(document.getElementById('selection'));
-            renderCharts();
-        }, 600);
+            const selectionSection = document.getElementById('selection');
+            if(selectionSection) animationObserver.observe(selectionSection);
+        }, 500);
     };
 
-    // مدیریت شمارنده‌های فعال برای جلوگیری از تداخل
     let activeCounters = { c1: null, c2: null, c3: null };
 
-    /**
-     * تابع انیمیشن اعداد (Counter Animation)
-     */
     function animateCounter(id, target, timerKey) {
         let current = 0;
-        const duration = 1800; // مدت زمان انیمیشن ۱.۸ ثانیه
+        const duration = 1500;
         const interval = 20;
         const step = target / (duration / interval);
-
         const el = document.getElementById(id);
-        if (activeCounters[timerKey]) clearInterval(activeCounters[timerKey]);
+        if (!el) return;
 
+        if (activeCounters[timerKey]) clearInterval(activeCounters[timerKey]);
         activeCounters[timerKey] = setInterval(() => {
             current += step;
             if (current >= target) {
@@ -427,108 +475,18 @@
         }, interval);
     }
 
-    /**
-     * شروع انیمیشن بخش گزینش
-     */
     function startFunnelAnimation() {
         const steps = ['step1', 'step2', 'step3'];
-        steps.forEach((step, index) => {
+        steps.forEach((stepId, index) => {
             setTimeout(() => {
-                const el = document.getElementById(step);
-                if (!el.classList.contains('active')) {
+                const el = document.getElementById(stepId);
+                if (el && !el.classList.contains('active')) {
                     el.classList.add('active');
                     if (index === 0) animateCounter('count1', 160, 'c1');
                     if (index === 1) animateCounter('count2', 60, 'c2');
                     if (index === 2) animateCounter('count3', 40, 'c3');
                 }
-            }, index * 300);
-        });
-    }
-
-    /**
-     * بازنشانی انیمیشن برای اجرای مجدد در اسکرول بعدی
-     */
-    function resetFunnelAnimation() {
-        const steps = ['step1', 'step2', 'step3'];
-        steps.forEach(step => {
-            document.getElementById(step).classList.remove('active');
-        });
-        document.getElementById('count1').innerText = '0';
-        document.getElementById('count2').innerText = '0';
-        document.getElementById('count3').innerText = '0';
-        Object.keys(activeCounters).forEach(k => { if(activeCounters[k]) clearInterval(activeCounters[k]); });
-    }
-
-    /**
-     * تابع کمکی برای شکستن لیبل‌های طولانی در نمودارها
-     */
-    function wrapLabel(label) {
-        if (typeof label !== 'string' || label.length <= 16) return label;
-        const words = label.split(' ');
-        const lines = [];
-        let cur = words[0];
-        for (let i = 1; i < words.length; i++) {
-            if (cur.length + 1 + words[i].length <= 16) cur += ' ' + words[i];
-            else { lines.push(cur); cur = words[i]; }
-        }
-        lines.push(cur);
-        return lines;
-    }
-
-    // تنظیمات تولتیپ برای نمایش صحیح لیبل‌های چندخطی
-    const tooltipConfig = {
-        callbacks: {
-            title: (items) => {
-                const label = items[0].chart.data.labels[items[0].dataIndex];
-                return Array.isArray(label) ? label.join(' ') : label;
-            }
-        }
-    };
-
-    /**
-     * رندر کردن نمودارهای Chart.js
-     */
-    function renderCharts() {
-        Chart.defaults.font.family = "'Vazirmatn', sans-serif";
-        Chart.defaults.color = '#64748b';
-
-        // ۱. نمودار میله‌ای مهارت‌ها (بخش مهارتی)
-        new Chart(document.getElementById('skillsChart'), {
-            type: 'bar',
-            data: {
-                labels: ['Word & AI', 'برق ساختمان', 'عکاسی', 'زبان', 'مطالعه'].map(wrapLabel),
-                datasets: [{
-                    data: [95, 85, 80, 70, 90],
-                    backgroundColor: '#fbbf24',
-                    borderRadius: 12
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false }, tooltip: tooltipConfig },
-                scales: {
-                    y: { display: false },
-                    x: { ticks: { color: '#ffffff', font: { weight: 'bold' } }, grid: { display: false } }
-                }
-            }
-        });
-
-        // ۲. نمودار حلقوی تحصیلی (بخش تحصیلی)
-        new Chart(document.getElementById('studyChart'), {
-            type: 'doughnut',
-            data: {
-                labels: ['قرائت‌خانه (پنج‌شنبه‌ها)', 'رفع اشکال امتحانات'].map(wrapLabel),
-                datasets: [{
-                    data: [75, 25],
-                    backgroundColor: ['#1e3a8a', '#d97706'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                plugins: { legend: { position: 'bottom' }, tooltip: tooltipConfig },
-                cutout: '75%'
-            }
+            }, index * 200);
         });
     }
 </script>
